@@ -5,11 +5,13 @@
 # sudo apt-get install python-imaging-tk
 # Tk installieren
 # sudo apt-get install python3-tk
-
+'''
 
 from Tkinter import *
 import ttk
 from PIL import ImageTk, Image
+import os
+import time
 import camera
 
 
@@ -19,38 +21,49 @@ gui.title("Lachmaschuen")
 #Fenstergröße festlegen
 gui.geometry('800x600')
 
+gif_pfad = ""
 
 # Definieren, was passiert, wenn Buttons geklickt werden
 # Muss vor der Definition des Buttons getan werden!!!
 # Button 1 Definition
 def clicked_button_start():
-    # label_gif.pack()
     camera.camera_pic()
-    gif_gui.pack()
+    label.pack()
+    gui.after(0, update, 0)
+    # label_gif.pack()
     label_restart.pack()
     button_restart.pack()
-
-    
-    
 
 
 ## zur Ausgangs-Gui zurückkehren 
 def clicked_button_restart():
-    camera.camera_pic()
-    gif_gui.pack()
-    label_restart.pack()
-    button_restart.pack()
+    pass
 
 
 
-#gif = PhotoImage(file = "/Users/stephanielist/Desktop/Studium_Human_Factors/2.Semester/Ingenieurwissenschaften/Programmierung/Projekt_Raspberry_Pi/blurred.gif")
-#gif = ImageTk.PhotoImage(Image.open("/home/pi/Desktop/hund.gif"))
-#label_gif = Label(gui, image = gif)
+
 
 gif_pfad = camera.camera_pic()
-gif = ImageTk.PhotoImage(Image.open(gif_pfad))
-gif_gui = Label(gui, image = gif)
+#gif = ImageTk.PhotoImage(Image.open(gif_pfad))
+#label_gif = Label(gui, image = gif)
 
+
+
+frames = [ImageTk.PhotoImage(file=gif_pfad, format = 'gif -index %i' %(i)) for i in range(4)]
+
+
+def update(ind):
+
+    frame = frames[ind]
+    ind += 1
+    ind = ind%len(frames)
+    time.sleep(1)
+    label.configure(image=frame)
+    gui.after(4, update, ind)
+    
+label = Label(gui)
+label.pack()
+gui.after(0, update, 0)
 
 
 #Label erstellen (im Fenster)
@@ -76,5 +89,30 @@ button_start.pack()
 
 gui.mainloop()
 
+'''
+
+
+
+from Tkinter import *
+import time
+import os
+import camera
+root = Tk()
+
+gif_pfad = camera.camera_pic()
+frames = [PhotoImage(file=gif_pfad,format = 'gif -index %i' %(i)) for i in range(4)]
+
+def update(ind):
+
+    frame = frames[ind]
+    ind += 1
+    ind = ind%len(frames)
+    time.sleep(1)
+    label.configure(image=frame)
+    root.after(4, update, ind)
+label = Label(root)
+label.pack()
+root.after(0, update, 0)
+root.mainloop()
 
 
