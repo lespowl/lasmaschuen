@@ -8,8 +8,8 @@ sudo apt-get install imagemagick -y
 '''
 
 #Bibliotheken importieren
-from picamera import PiCamera
-from time import sleep
+from picamera import PiCamera, Color
+import time
 from datetime import datetime
 import os
 
@@ -62,27 +62,35 @@ def gif(pfad_pics_parameter):
 #Funktion zur Aufnahme der Bilder sowie Erstellung der Gifs
 def camera_pic():
     try:
-        #alpha: Preview halb-durchsichtig starten (0-255)
-        camera.start_preview(alpha = 200)               
-        # Countdown läuft runter 5.. 4..
-        # Kamera wartet 2 Sekunden
-        sleep(2)                                        
+        #alpha: Preview halb-durchsichtig starten (0-255) alpha = 200
+        camera.start_preview() 
+        # Text konfigurieren
+        camera.annotate_text_size = 160 #6-160
+        camera.annotate_background = Color('black')
+        camera.annotate_foreground = Color('white')
         
-        # bei 3 startet die Kamera mit der Aufnahme
+        # Countdown läuft runter 5.. 4..
+        for i in range(5,2,-1):
+            camera.annotate_text = "%s" % i
+            time.sleep(1)
+        camera.annotate_text = ""
+        # Kamera wartet 2 Sekunden (nur notwendig, wenn Countdown nicht vorhanden
+        #sleep(2)                                        
+        
+        # Pfad für die Bilder erstellen
         pfad_temp = pfad_pics + '/pics_session'
         os.mkdir(pfad_temp)
         
-        
+        # bei 3 startet die Kamera mit der Aufnahme
         for i in range(num_pic):
             camera.capture(pfad_temp + '/image{0:02d}.jpg'.format(i))
-            sleep(0.5)
+            time.sleep(0.5)
             
         #Preview wird beendet    
         camera.stop_preview()                           
         
         # Funktion gif aufrufen, temporären Pics-session-Ordner übergeben
         pfad_gif_return = gif(pfad_temp)
-        
         
         
         # Inhalt des Pics-session-Ordner löschen
