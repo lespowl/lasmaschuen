@@ -6,75 +6,97 @@
 # Tk installieren
 # sudo apt-get install python3-tk
 
-
 from Tkinter import *
-import ttk
 from PIL import ImageTk, Image
+import os
+import time
 import camera
 
-
-gui = Tk()
-gui.title("Lachmaschuen")
-
+#Gui konfigurieren
+gui1 = Tk()
+gui1.title("Lachmaschuen")
 #Fenstergröße festlegen
-gui.geometry('800x600')
+gui1.geometry('1100x1000')
+
+gif_pfad = ""
 
 
-# Definieren, was passiert, wenn Buttons geklickt werden
-# Muss vor der Definition des Buttons getan werden!!!
-# Button 1 Definition
+##zum Testen ohne Picamera
+#gif_pfad = "Pfad zum Bild"
+#gif = ImageTk.PhotoImage(Image.open(gif_pfad))
+#label_gif = Label(gui1, image = gif)
+#frames = [ImageTk.PhotoImage(file=gif_pfad, format = 'gif -index %i' %(i)) for i in range(4)]
+
+#Funktionen definieren
+
+##Gui starten
+def start_gui():
+    label_start.pack()
+    button_start.pack()
+    
+def restart_gui():
+    label_restart.pack()
+    button_restart.pack()
+
+##Gif in Gui einbinden
+def gif_einbinden(ind):
+    if gif_is_running: 
+        frame = frames[ind]
+        ind += 1
+        ind = ind%len(frames)
+        #time.sleep(0.15)
+        label_gif.configure(image=frame)
+        gui1.after(100, gif_einbinden, ind)
+
+
+#Funktionen der Buttons definieren
+##Button Start
 def clicked_button_start():
-    # label_gif.pack()
-    camera.camera_pic()
-    gif_gui.pack()
-    label_restart.pack()
-    button_restart.pack()
-
+    #Bilder für Gif erstellen - Kamera-Funktion aufrufen
+    gif_pfad = camera.camera_pic()
+    global frames
+    frames = [PhotoImage(file=gif_pfad,format = 'gif -index %i' %(i)) for i in range(4)]
     
+    #label_start und button_start löschen
+    label_start.pack_forget()
+    button_start.pack_forget()
     
+    #Gif einbinden
+    global gif_is_running
+    gif_is_running = True
+    label_gif.pack()
+    gui1.after(0, gif_einbinden, 0)
+    
+    #Label und Button für Restart einblenden
+    restart_gui()
 
-
-## zur Ausgangs-Gui zurückkehren 
+##Button restart
 def clicked_button_restart():
-    camera.camera_pic()
-    gif_gui.pack()
-    label_restart.pack()
-    button_restart.pack()
+    #Gif-Darstellung beenden
+    global gif_is_running
+    gif_is_running = False
+    label_gif.pack_forget()
+    
+    #Label restart unf Button restart ausblenden
+    label_restart.pack_forget()
+    button_restart.pack_forget()
+    
+    #Label Start und Button Start einblenden
+    start_gui()
 
+if __name__ == '__main__':
+    #Button erstellen
+    button_start = Button(gui1, text="Start", command=clicked_button_start, font=("Arial", 20))
+    button_restart = Button(gui1, text = "von vorne", command= clicked_button_restart, font= ("Arial",20))
+    label_gif = Label(gui1)
 
+    #Label erstellen
+    label_start = Label(gui1, text ="Drücke Start, um die Lachmaschuen zu starten", font = ("Arial", 20))
+    label_restart = Label(gui1, text ="Bitte hier klicken, um zum Ausgangszustand zurückzukehren", font = ("Arial", 20))
 
-#gif = PhotoImage(file = "/Users/stephanielist/Desktop/Studium_Human_Factors/2.Semester/Ingenieurwissenschaften/Programmierung/Projekt_Raspberry_Pi/blurred.gif")
-#gif = ImageTk.PhotoImage(Image.open("/home/pi/Desktop/hund.gif"))
-#label_gif = Label(gui, image = gif)
-
-gif_pfad = camera.camera_pic()
-gif = ImageTk.PhotoImage(Image.open(gif_pfad))
-gif_gui = Label(gui, image = gif)
-
-
-
-#Label erstellen (im Fenster)
-label_1 = Label(gui, text ="Drücke Start, um die Lachmaschuen zu starten", font = ("Arial", 20))
-label_restart = Label(gui, text ="Bitte hier klicken, um zum Ausgangszustand zurückzukehren", font = ("Arial", 20))
-
-#Button erstellen
-button_start = Button(gui, text="Start", command=clicked_button_start, font=("Arial", 20))
-button_restart = Button(gui, text = "von vorne", command= clicked_button_restart, font= ("Arial",20))
-
-##zur Darstellung im Darkmode auf dem Mac
-#button_start = ttk.Button(gui, text="Start", command=clicked_button_start)
-
-
-
-#Button und Labels von oben nach unten erstellen
-label_1.pack()
-button_start.pack()
-
-
-
-
-
-gui.mainloop()
-
+    #Gui starten
+    start_gui()
+    
+    gui1.mainloop()
 
 
