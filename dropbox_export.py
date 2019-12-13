@@ -5,7 +5,7 @@ db = dropbox.Dropbox("JOBzoGZ5CMAAAAAAAAAAC_TwWPLaz_udrVSWBC9WDfAGhyCy9P79f8RUC8
 
 #print('Account infos: ', db.users_get_current_account())
 
-def dropbox_export(gif_pfad):
+def dropbox_ja(gif_pfad):
     pic = open(gif_pfad, "rb")
     gif_name = os.path.basename(gif_pfad)
     pic_dropbox = "/" + gif_name
