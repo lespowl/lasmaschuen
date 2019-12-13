@@ -101,6 +101,7 @@ def clicked_button_losgehts():
 ##Button Dropboxja
 def clicked_button_dropboxja():
     #GIF in Dropbox laden
+    dropbox_export.dropbox_ja(gif_pfad)
 
     
     #Gif-Darstellung beenden
