@@ -15,6 +15,9 @@ import dropbox_export
 
 #Gui konfigurieren
 gui1 = Tk()
+farbe_bg = "white"
+gui1.configure(bg= farbe_bg)
+gui_frame = Frame(gui1, bg= farbe_bg)
 gui1.title("Lachmaschuen")
 #Fenstergröße festlegen
 #gui1.geometry('1100x1000')  
@@ -36,24 +39,29 @@ gif_pfad = ""
 
 ##Gui starten
 def start_gui():
+    gui_frame.pack(ipady=40, pady=200)
     label_startfoto.pack()
     label_start.pack()
-    button_start.pack()
+    button_start.pack(side='bottom')
     
+
 def losgehts_gui():
+    gui_frame.pack(ipady=40, pady=200)
     label_losgehts.pack()
-    button_losgehts.pack()    
+    button_losgehts.pack(side='bottom')    
  
  
 def dropbox_gui():
+    gui_frame.pack(ipadx=20, ipady=40, pady=40)
     label_dropbox.pack()
-    button_dropboxja.pack()
-    button_dropboxnein.pack()
+    button_dropboxja.pack(side='left')
+    button_dropboxnein.pack(side='right')
     
         
 def restart_gui():
+    gui_frame.pack(ipady=40, pady=200)
     label_restart.pack()
-    button_restart.pack()
+    button_restart.pack(side='bottom')
 
 ##Gif in Gui einbinden
 def gif_einbinden(ind):
@@ -69,6 +77,7 @@ def gif_einbinden(ind):
 #Funktionen der Buttons definieren
 ##Button Start
 def clicked_button_start():
+    gui_frame.pack_forget()
     label_start.pack_forget()
     button_start.pack_forget()
     losgehts_gui()
@@ -76,6 +85,7 @@ def clicked_button_start():
 ##Button los gehts
 def clicked_button_losgehts():
     #Label start und Button start ausblenden
+    gui_frame.pack_forget()
     label_startfoto.pack_forget()
     label_losgehts.pack_forget()
     button_losgehts.pack_forget()
@@ -88,13 +98,13 @@ def clicked_button_losgehts():
     frames = [PhotoImage(file=gif_pfad,format = 'gif -index %i' %(i)) for i in range(4)]
     
     #label_start und button_start löschen
-    label_start.pack_forget()
-    button_start.pack_forget()
+    #label_start.pack_forget()
+    #button_start.pack_forget()
     
     #Gif einbinden
     global gif_is_running
     gif_is_running = True
-    label_gif.pack()
+    label_gif.pack(pady=20)
     gui1.after(0, gif_einbinden, 0)
     
     #Label und Button für Dropbox einblenden
@@ -104,7 +114,6 @@ def clicked_button_losgehts():
 def clicked_button_dropboxja():
     #GIF in Dropbox laden
     dropbox_export.dropbox_ja(gif_pfad)
-
     
     #Gif-Darstellung beenden
     global gif_is_running
@@ -112,6 +121,7 @@ def clicked_button_dropboxja():
     label_gif.pack_forget()
     
     #Label restart und Button restart ausblenden
+    gui_frame.pack_forget()
     label_dropbox.pack_forget()
     button_dropboxja.pack_forget()
     button_dropboxnein.pack_forget()
@@ -127,6 +137,7 @@ def clicked_button_dropboxnein():
     label_gif.pack_forget()
     
     #Label restart und Button restart ausblenden
+    gui_frame.pack_forget()
     label_dropbox.pack_forget()
     button_dropboxja.pack_forget()
     button_dropboxnein.pack_forget()
@@ -139,6 +150,7 @@ def clicked_button_dropboxnein():
 ##Button restart
 def clicked_button_restart():
     #Label restart und Button restart ausblenden
+    gui_frame.pack_forget()
     label_restart.pack_forget()
     button_restart.pack_forget()
     
@@ -147,27 +159,28 @@ def clicked_button_restart():
 
 if __name__ == '__main__':
     #Button erstellen
-    button_start = Button(gui1, text="Start", command=clicked_button_start, font=("Arial", 20))
-    button_losgehts = Button(gui1, text="Los gehts", command=clicked_button_losgehts, font=("Arial", 20))
+    button_start = Button(gui_frame, text="Start", command=clicked_button_start, font=("Arial", 20), bg="black", fg="white")
+    button_losgehts = Button(gui_frame, text="Los gehts", command=clicked_button_losgehts, font=("Arial", 20), bg="black", fg="white")
     
-    button_dropboxja = Button(gui1, text="Ja, hochladen", command=clicked_button_dropboxja, font=("Arial", 20))
+    button_dropboxja = Button(gui_frame, text="Ja, hochladen", command=clicked_button_dropboxja, font=("Arial", 20), bg="green")
     
-    button_dropboxnein = Button(gui1, text="Nein, nicht hochladen", command=clicked_button_dropboxnein, font=("Arial", 20))
+    button_dropboxnein = Button(gui_frame, text="Nein, nicht hochladen", command=clicked_button_dropboxnein, font=("Arial", 20), bg="red")
     
-    button_restart = Button(gui1, text = "von vorne", command= clicked_button_restart, font= ("Arial",20))
+    button_restart = Button(gui_frame, text = "von vorne", command= clicked_button_restart, font= ("Arial",20), bg="black", fg="white")
     label_gif = Label(gui1)
 
     #Label erstellen
-    label_start = Label(gui1, text ="Schün, dass du da bist. Drücke Start, um die Lachmaschün zu spielen", font = ("Arial", 20))
+    label_start = Label(gui_frame, text ="Schün, dass du da bist.\nDrücke Start, um die Lachmaschün zu starten", font = ("Arial", 20), bg= farbe_bg)
     
     startfoto = ImageTk.PhotoImage(Image.open("/home/pi/Lachmaschuen/Bilder_Gui/startbild.jpg"))
-    label_startfoto = Label(gui1, image = startfoto)
     
-    label_losgehts = Label(gui1, text ="Bist du bereit? Setze dich bitte aufrecht auf den Stuhl und drücke auf los gehts.", font = ("Arial", 20))
+    label_startfoto = Label(gui_frame, image = startfoto)
     
-    label_dropbox = Label(gui1, text ="Darf das GIF in die Dropbox geladen werden?", font = ("Arial", 20))
+    label_losgehts = Label(gui_frame, text ="Bist du bereit?\nSetze dich bitte aufrecht auf den Stuhl und drücke auf 'Los gehts'.", font = ("Arial", 20), bg= farbe_bg)
     
-    label_restart = Label(gui1, text ="Bitte hier klicken, um die Lachmaschün neu zu starten", font = ("Arial", 20))
+    label_dropbox = Label(gui_frame, text ="Darf das GIF in die Dropbox geladen werden?", font = ("Arial", 20), bg= farbe_bg)
+    
+    label_restart = Label(gui_frame, text ="Bitte hier klicken, um die Lachmaschün neu zu starten", font = ("Arial", 20), bg= farbe_bg)
 
     #Gui starten
     start_gui()
