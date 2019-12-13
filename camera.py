@@ -63,19 +63,21 @@ def gif(pfad_pics_parameter):
 def camera_pic():
     try:
         #alpha: Preview halb-durchsichtig starten (0-255) alpha = 200
-        camera.start_preview() 
+        camera.start_preview(alpha = 200, fullscreen = True) 
         # Text konfigurieren
         camera.annotate_text_size = 160 #6-160
         camera.annotate_background = Color('black')
         camera.annotate_foreground = Color('white')
+        
+        # Kamera wartet 2 Sekunden, bevor der Countdown startet
+        time.sleep(2)  
         
         # Countdown läuft runter 5.. 4..
         for i in range(5,2,-1):
             camera.annotate_text = "%s" % i
             time.sleep(1)
         camera.annotate_text = ""
-        # Kamera wartet 2 Sekunden (nur notwendig, wenn Countdown nicht vorhanden
-        #sleep(2)                                        
+                                      
         
         # Pfad für die Bilder erstellen
         pfad_temp = pfad_pics + '/pics_session'
