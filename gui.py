@@ -6,11 +6,12 @@
 # Tk installieren
 # sudo apt-get install python3-tk
 
-from Tkinter import *
+from tkinter import *
 from PIL import ImageTk, Image
 import os
 import time
 import camera
+import dropbox_export
 
 #Gui konfigurieren
 gui1 = Tk()
@@ -81,6 +82,7 @@ def clicked_button_losgehts():
 
     
     #Bilder für Gif erstellen - Kamera-Funktion aufrufen
+    global gif_pfad
     gif_pfad = camera.camera_pic()
     global frames
     frames = [PhotoImage(file=gif_pfad,format = 'gif -index %i' %(i)) for i in range(4)]
