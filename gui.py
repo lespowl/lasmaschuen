@@ -39,15 +39,15 @@ gif_pfad = ""
 
 ##Gui starten
 def start_gui():
-    gui_frame.pack(ipady=40, pady=200)
+    gui_frame.pack(pady=200)
     label_startfoto.pack()
-    label_start.pack()
+    label_start.pack(pady=30)
     button_start.pack(side='bottom')
     
 
 def losgehts_gui():
-    gui_frame.pack(ipady=40, pady=200)
-    label_losgehts.pack()
+    gui_frame.pack(pady=200)
+    label_losgehts.pack(pady=30)
     button_losgehts.pack(side='bottom')    
  
  
@@ -59,8 +59,8 @@ def dropbox_gui():
     
         
 def restart_gui():
-    gui_frame.pack(ipady=40, pady=200)
-    label_restart.pack()
+    gui_frame.pack(pady=200)
+    label_restart.pack(pady=30)
     button_restart.pack(side='bottom')
 
 ##Gif in Gui einbinden
