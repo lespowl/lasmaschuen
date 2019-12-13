@@ -6,17 +6,22 @@
 # Tk installieren
 # sudo apt-get install python3-tk
 
-from Tkinter import *
+from tkinter import *
 from PIL import ImageTk, Image
 import os
 import time
 import camera
+import dropbox_export
 
 #Gui konfigurieren
 gui1 = Tk()
 gui1.title("Lachmaschuen")
 #Fenstergröße festlegen
-gui1.geometry('1100x1000')
+#gui1.geometry('1100x1000')  
+
+#Fullscreen ESC beendet
+gui1.attributes('-fullscreen', True)
+gui1.bind("<Escape>", quit)
 
 gif_pfad = ""
 
@@ -31,9 +36,21 @@ gif_pfad = ""
 
 ##Gui starten
 def start_gui():
+    label_startfoto.pack()
     label_start.pack()
     button_start.pack()
     
+def losgehts_gui():
+    label_losgehts.pack()
+    button_losgehts.pack()    
+ 
+ 
+def dropbox_gui():
+    label_dropbox.pack()
+    button_dropboxja.pack()
+    button_dropboxnein.pack()
+    
+        
 def restart_gui():
     label_restart.pack()
     button_restart.pack()
@@ -52,7 +69,20 @@ def gif_einbinden(ind):
 #Funktionen der Buttons definieren
 ##Button Start
 def clicked_button_start():
+    label_start.pack_forget()
+    button_start.pack_forget()
+    losgehts_gui()
+    
+##Button los gehts
+def clicked_button_losgehts():
+    #Label start und Button start ausblenden
+    label_startfoto.pack_forget()
+    label_losgehts.pack_forget()
+    button_losgehts.pack_forget()
+
+    
     #Bilder für Gif erstellen - Kamera-Funktion aufrufen
+    global gif_pfad
     gif_pfad = camera.camera_pic()
     global frames
     frames = [PhotoImage(file=gif_pfad,format = 'gif -index %i' %(i)) for i in range(4)]
@@ -67,17 +97,48 @@ def clicked_button_start():
     label_gif.pack()
     gui1.after(0, gif_einbinden, 0)
     
-    #Label und Button für Restart einblenden
-    restart_gui()
+    #Label und Button für Dropbox einblenden
+    dropbox_gui()
 
-##Button restart
-def clicked_button_restart():
+##Button Dropboxja
+def clicked_button_dropboxja():
+    #GIF in Dropbox laden
+    dropbox_export.dropbox_ja(gif_pfad)
+
+    
     #Gif-Darstellung beenden
     global gif_is_running
     gif_is_running = False
     label_gif.pack_forget()
     
-    #Label restart unf Button restart ausblenden
+    #Label restart und Button restart ausblenden
+    label_dropbox.pack_forget()
+    button_dropboxja.pack_forget()
+    button_dropboxnein.pack_forget()
+    
+    #Label und Button für Restart einblenden
+    restart_gui()
+
+##Button Dropboxnein
+def clicked_button_dropboxnein():
+    #Gif-Darstellung beenden
+    global gif_is_running
+    gif_is_running = False
+    label_gif.pack_forget()
+    
+    #Label restart und Button restart ausblenden
+    label_dropbox.pack_forget()
+    button_dropboxja.pack_forget()
+    button_dropboxnein.pack_forget()
+    
+    #Label und Button für Restart einblenden
+    restart_gui()
+    
+
+
+##Button restart
+def clicked_button_restart():
+    #Label restart und Button restart ausblenden
     label_restart.pack_forget()
     button_restart.pack_forget()
     
@@ -87,12 +148,26 @@ def clicked_button_restart():
 if __name__ == '__main__':
     #Button erstellen
     button_start = Button(gui1, text="Start", command=clicked_button_start, font=("Arial", 20))
+    button_losgehts = Button(gui1, text="Los gehts", command=clicked_button_losgehts, font=("Arial", 20))
+    
+    button_dropboxja = Button(gui1, text="Ja, hochladen", command=clicked_button_dropboxja, font=("Arial", 20))
+    
+    button_dropboxnein = Button(gui1, text="Nein, nicht hochladen", command=clicked_button_dropboxnein, font=("Arial", 20))
+    
     button_restart = Button(gui1, text = "von vorne", command= clicked_button_restart, font= ("Arial",20))
     label_gif = Label(gui1)
 
     #Label erstellen
-    label_start = Label(gui1, text ="Drücke Start, um die Lachmaschuen zu starten", font = ("Arial", 20))
-    label_restart = Label(gui1, text ="Bitte hier klicken, um zum Ausgangszustand zurückzukehren", font = ("Arial", 20))
+    label_start = Label(gui1, text ="Schün, dass du da bist. Drücke Start, um die Lachmaschün zu spielen", font = ("Arial", 20))
+    
+    startfoto = ImageTk.PhotoImage(Image.open("/home/pi/Lachmaschuen/Bilder_Gui/startbild.jpg"))
+    label_startfoto = Label(gui1, image = startfoto)
+    
+    label_losgehts = Label(gui1, text ="Bist du bereit? Setze dich bitte aufrecht auf den Stuhl und drücke auf los gehts.", font = ("Arial", 20))
+    
+    label_dropbox = Label(gui1, text ="Darf das GIF in die Dropbox geladen werden?", font = ("Arial", 20))
+    
+    label_restart = Label(gui1, text ="Bitte hier klicken, um die Lachmaschün neu zu starten", font = ("Arial", 20))
 
     #Gui starten
     start_gui()

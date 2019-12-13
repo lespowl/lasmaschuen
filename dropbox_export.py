@@ -5,6 +5,7 @@ db = dropbox.Dropbox("JOBzoGZ5CMAAAAAAAAAAC_TwWPLaz_udrVSWBC9WDfAGhyCy9P79f8RUC8
 
 #print('Account infos: ', db.users_get_current_account())
 
+
 def dropbox_ja(gif_pfad):
     pic = open(gif_pfad, "rb")
     gif_name = os.path.basename(gif_pfad)
@@ -14,6 +15,8 @@ def dropbox_ja(gif_pfad):
 
 
 if __name__ == '__main__':
-    dropbox_export(gif_pfad)
+    #zum Testen lokale GIF in den Pfad einfügen
+    gif_pfad = "/home/pi/Lachmaschuen/Gif/2019-12-13_14:39:08.gif"
+    dropbox_ja(gif_pfad)
     print('uploaded')
 
