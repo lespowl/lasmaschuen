@@ -97,9 +97,7 @@ def clicked_button_losgehts():
     global frames
     frames = [PhotoImage(file=gif_pfad,format = 'gif -index %i' %(i)) for i in range(4)]
     
-    #label_start und button_start löschen
-    #label_start.pack_forget()
-    #button_start.pack_forget()
+
     
     #Gif einbinden
     global gif_is_running
@@ -185,6 +183,6 @@ if __name__ == '__main__':
     #Gui starten
     start_gui()
     
-    gui1.mainloop()
+    gui1.mainlmoop()
 
 
