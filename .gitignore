@@ -105,3 +105,4 @@ venv.bak/
 
 # eigene Erweiterungen
 .DS_Store
+*.save
