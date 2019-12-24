@@ -170,7 +170,7 @@ if __name__ == '__main__':
     #Label erstellen
     label_start = Label(gui_frame, text ="Schün, dass du da bist.\nDrücke Start, um die Lachmaschün zu starten", font = ("Arial", 20), bg= farbe_bg)
     
-    startfoto = ImageTk.PhotoImage(Image.open("/home/pi/Lachmaschuen/Bilder_Gui/startbild.jpg"))
+    startfoto = ImageTk.PhotoImage(Image.open("startbild.jpg"))
     
     label_startfoto = Label(gui_frame, image = startfoto)
     

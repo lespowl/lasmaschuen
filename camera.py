@@ -39,10 +39,10 @@ num_pic = 4
 num_delay = 15
 
 #Pfad Pics
-pfad_pics = '/home/pi/Lachmaschuen/Pics_temp'
+pfad_pics = 'Pics_temp'
 
 #Pfad Gif
-pfad_gif = '/home/pi/Lachmaschuen/Gif/'
+pfad_gif = 'Gif/'
 
 
 
