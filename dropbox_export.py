@@ -33,7 +33,7 @@ def dropbox_ja(gif_pfad):
     # Bild aus dem QR-Code erstellen
     img = qr.make_image()
     # QR-Code speichern
-    qr_name = os.path.splitext(gif_name)[0]+ ".png"
+    qr_name = os.path.splitext(gif_name)[0]+ ".jpg"
     script_path = os.path.dirname(os.path.abspath(__file__))
     qr_pfad = os.path.join(script_path, "QR_Codes", qr_name)
     img.save(qr_pfad)

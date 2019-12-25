@@ -10,7 +10,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 import os
 import time
-#import camera
+import camera
 import dropbox_export
 
 #Gui konfigurieren
@@ -31,10 +31,13 @@ qr_pfad = ""
 
 
 ##zum Testen ohne Picamera
-gif_pfad = "/Users/stephanielist/Desktop/PiTest/music-2149880.jpg"
-gif = ImageTk.PhotoImage(Image.open(gif_pfad))
-label_gif = Label(gui1, image = gif)
-frames = [ImageTk.PhotoImage(file=gif_pfad, format = 'gif -index %i' %(i)) for i in range(4)]
+#gif_pfad = "/home/pi/Lachmaschuen/Gif/2019-12-17_15:11:15.gif"
+#gif = ImageTk.PhotoImage(Image.open(gif_pfad))
+#label_gif = Label(gui1, image = gif)
+#für Foto
+#frames = [ImageTk.PhotoImage(file=gif_pfad, format = 'gif -index %i' %(i)) for i in range(4)]
+#für Gif
+#frames = [PhotoImage(file=gif_pfad,format = 'gif -index %i' %(i)) for i in range(4)]
 
 #Funktionen definieren
 
@@ -53,17 +56,20 @@ def losgehts_gui():
  
  
 def dropbox_gui():
-    gui_frame.pack(ipadx=20, ipady=40, pady=40)
+    gui_frame.pack(ipadx=10, ipady=40, pady=40)
     label_dropbox.pack()
     button_dropboxja.pack(side='left')
     button_dropboxnein.pack(side='right')
 
-    
-        
-def restart_gui():
+def restart_dropbox_ja_gui():
     gui_frame.pack(pady=200)
     label_restart.pack(pady=30)
-    button_restart.pack(side='bottom')
+    button_restart_dropbox_ja.pack(side='bottom')
+    
+def restart_dropbox_nein_gui():
+    gui_frame.pack(pady=200)
+    label_restart.pack(pady=30)
+    button_restart_dropbox_nein.pack(side='bottom')
 
 ##Gif in Gui einbinden
 def gif_einbinden(ind):
@@ -87,21 +93,21 @@ def clicked_button_start():
 ##Button los gehts
 def clicked_button_losgehts():
     #Label start und Button start ausblenden
-    gui_frame.pack_forget()
+    #gui_frame.pack_forget()
     label_startfoto.pack_forget()
     label_losgehts.pack_forget()
     button_losgehts.pack_forget()
 
+    label_bittewarten.pack()
     
     #Bilder für Gif erstellen - Kamera-Funktion aufrufen
-    #global gif_pfad
-    #gif_pfad = camera.camera_pic()
-    #global frames
-    #frames = [PhotoImage(file=gif_pfad,format = 'gif -index %i' %(i)) for i in range(4)]
+    global gif_pfad
+    gif_pfad = camera.camera_pic()
+    global frames
+    frames = [PhotoImage(file=gif_pfad,format = 'gif -index %i' %(i)) for i in range(4)]
     
-    #label_start und button_start löschen
-    #label_start.pack_forget()
-    #button_start.pack_forget()
+    gui_frame.pack_forget()
+    label_bittewarten.pack_forget()
     
     #Gif einbinden
     global gif_is_running
@@ -114,40 +120,43 @@ def clicked_button_losgehts():
 
 ##Button Dropboxja
 def clicked_button_dropboxja():
-    #GIF in Dropbox laden
-    link_gif_dp, qr_name = dropbox_export.dropbox_ja(gif_pfad)
-    
     #Gif-Darstellung beenden
     global gif_is_running
     gif_is_running = False
     label_gif.pack_forget()
     
-    #Label restart und Button restart ausblenden
+    label_bittewarten.pack(pady=30)
+        
+    #Gif, Label und Button Dropbox ausblenden
     gui_frame.pack_forget()
     label_dropbox.pack_forget()
     button_dropboxja.pack_forget()
     button_dropboxnein.pack_forget()
+
+    #GIF in Dropbox laden
+    link_gif_dp, qr_name = dropbox_export.dropbox_ja(gif_pfad)
+    
     
     #QR-Code-Pfad erstellen
     qr_pfad = os.path.join(qr_ordnerpfad, qr_name)
+    global qr_bild
     qr_bild = ImageTk.PhotoImage(Image.open(qr_pfad))
 
-
+    gui_frame.pack(pady=200)
+    global label_bild_qr
+    label_bild_qr = Label(gui_frame, image = qr_bild)
+    global label_link_qr
     label_link_qr = Label(gui_frame, text = str(link_gif_dp), font = ("Arial", 20), bg= farbe_bg)
 
+    #gui_frame.pack_forget()
+    label_bittewarten.pack_forget()
 
-    gui_frame.pack(pady=100)
-    label_bild_qr = Label(gui_frame, image = qr_bild)
-    label_link_qr.pack(pady=30)
+    label_qr_erklärung.pack(ipady=40)
     label_bild_qr.pack()
+    label_link_qr.pack(pady=30)
 
+    restart_dropbox_ja_gui()
 
-
-
-def clicked_button_restart():
-    #Barcode, Label QR-Code und Button restart ausblenden
-    #Label und Button für Restart einblenden
-    restart_gui()
 
 ##Button Dropboxnein
 def clicked_button_dropboxnein():
@@ -156,23 +165,36 @@ def clicked_button_dropboxnein():
     gif_is_running = False
     label_gif.pack_forget()
     
-    #Label restart und Button restart ausblenden
+    #Gif, Label und Button Dropbox ausblenden
     gui_frame.pack_forget()
     label_dropbox.pack_forget()
     button_dropboxja.pack_forget()
     button_dropboxnein.pack_forget()
     
     #Label und Button für Restart einblenden
-    restart_gui()
+    restart_dropbox_nein_gui()
     
 
 
-##Button restart
-def clicked_button_restart():
+##Button restart Dropbox ja
+def clicked_button_restart_dropbox_ja():
+    #Label restart und Button restart ausblenden
+    gui_frame.pack_forget()
+    label_qr_erklärung.pack_forget()
+    label_bild_qr.pack_forget()
+    label_link_qr.pack_forget()
+    label_restart.pack_forget()
+    button_restart_dropbox_ja.pack_forget()
+    
+    #Label Start und Button Start einblenden
+    start_gui()
+    
+##Button restart Dropbox nein
+def clicked_button_restart_dropbox_nein():
     #Label restart und Button restart ausblenden
     gui_frame.pack_forget()
     label_restart.pack_forget()
-    button_restart.pack_forget()
+    button_restart_dropbox_nein.pack_forget()
     
     #Label Start und Button Start einblenden
     start_gui()
@@ -188,12 +210,14 @@ if __name__ == '__main__':
     button_start = Button(gui_frame, text="Start", command=clicked_button_start, font=("Arial", 20), bg="black", fg="white")
     button_losgehts = Button(gui_frame, text="Los gehts", command=clicked_button_losgehts, font=("Arial", 20), bg="black", fg="white")
     
-    button_dropboxja = Button(gui_frame, text="Ja, hochladen", command=clicked_button_dropboxja, font=("Arial", 20), bg="green")
+    button_dropboxja = Button(gui_frame, text="Ja, her damit", command=clicked_button_dropboxja, font=("Arial", 20), bg="black", fg="white")
     
-    button_dropboxnein = Button(gui_frame, text="Nein, nicht hochladen", command=clicked_button_dropboxnein, font=("Arial", 20), bg="red")
+    button_dropboxnein = Button(gui_frame, text="Nein, bloß nicht", command=clicked_button_dropboxnein, font=("Arial", 20), bg="black", fg="white")
     
-    button_restart = Button(gui_frame, text = "von vorne", command= clicked_button_restart, font= ("Arial",20), bg="black", fg="white")
-    label_gif = Label(gui1)
+    button_restart_dropbox_ja = Button(gui_frame, text = "von vorne", command= clicked_button_restart_dropbox_ja, font= ("Arial",20), bg="black", fg="white")
+    
+    button_restart_dropbox_nein = Button(gui_frame, text = "von vorne", command= clicked_button_restart_dropbox_nein, font= ("Arial",20), bg="black", fg="white")
+
 
     #Label erstellen
     label_start = Label(gui_frame, text ="Schün, dass du da bist.\nDrücke Start, um die Lachmaschün zu starten", font = ("Arial", 20), bg= farbe_bg)
@@ -204,7 +228,11 @@ if __name__ == '__main__':
     
     label_losgehts = Label(gui_frame, text ="Bist du bereit?\nSetze dich bitte aufrecht auf den Stuhl und drücke auf 'Los gehts'.", font = ("Arial", 20), bg= farbe_bg)
     
-    label_dropbox = Label(gui_frame, text ="Darf das GIF in die Dropbox geladen werden?", font = ("Arial", 20), bg= farbe_bg)
+    label_bittewarten = Label(gui_frame, text ="Die Lachmaschün ist beschäftigt.\nBitte warten!", font = ("Arial", 20), bg= farbe_bg)
+    
+    label_dropbox = Label(gui_frame, text ="Du hast jetzt die Möglichkeit, einen QR-Code zu erzeugen, um dein Gif herunterzuladen.\nDas Gif wird dazu in die Lachmaschün-Dropbox geladen.", font = ("Arial", 20), bg= farbe_bg)
+    
+    label_qr_erklärung = Label(gui_frame, text ="Unter folgendem QR-Code bzw. Link kannst du dir dein Gif herunterladen", font = ("Arial", 20), bg= farbe_bg)
 
     label_restart = Label(gui_frame, text ="Bitte hier klicken, um die Lachmaschün neu zu starten", font = ("Arial", 20), bg= farbe_bg)
 
