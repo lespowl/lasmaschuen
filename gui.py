@@ -10,7 +10,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 import os
 import time
-import camera
+#import camera
 import dropbox_export
 
 #Gui konfigurieren
@@ -27,13 +27,14 @@ gui1.attributes('-fullscreen', True)
 gui1.bind("<Escape>", quit)
 
 gif_pfad = ""
+qr_pfad = ""
 
 
 ##zum Testen ohne Picamera
-#gif_pfad = "Pfad zum Bild"
-#gif = ImageTk.PhotoImage(Image.open(gif_pfad))
-#label_gif = Label(gui1, image = gif)
-#frames = [ImageTk.PhotoImage(file=gif_pfad, format = 'gif -index %i' %(i)) for i in range(4)]
+gif_pfad = "/Users/stephanielist/Desktop/PiTest/music-2149880.jpg"
+gif = ImageTk.PhotoImage(Image.open(gif_pfad))
+label_gif = Label(gui1, image = gif)
+frames = [ImageTk.PhotoImage(file=gif_pfad, format = 'gif -index %i' %(i)) for i in range(4)]
 
 #Funktionen definieren
 
@@ -56,6 +57,7 @@ def dropbox_gui():
     label_dropbox.pack()
     button_dropboxja.pack(side='left')
     button_dropboxnein.pack(side='right')
+
     
         
 def restart_gui():
@@ -92,10 +94,10 @@ def clicked_button_losgehts():
 
     
     #Bilder für Gif erstellen - Kamera-Funktion aufrufen
-    global gif_pfad
-    gif_pfad = camera.camera_pic()
-    global frames
-    frames = [PhotoImage(file=gif_pfad,format = 'gif -index %i' %(i)) for i in range(4)]
+    #global gif_pfad
+    #gif_pfad = camera.camera_pic()
+    #global frames
+    #frames = [PhotoImage(file=gif_pfad,format = 'gif -index %i' %(i)) for i in range(4)]
     
     #label_start und button_start löschen
     #label_start.pack_forget()
@@ -113,7 +115,7 @@ def clicked_button_losgehts():
 ##Button Dropboxja
 def clicked_button_dropboxja():
     #GIF in Dropbox laden
-    dropbox_export.dropbox_ja(gif_pfad)
+    link_gif_dp, qr_name = dropbox_export.dropbox_ja(gif_pfad)
     
     #Gif-Darstellung beenden
     global gif_is_running
@@ -126,6 +128,24 @@ def clicked_button_dropboxja():
     button_dropboxja.pack_forget()
     button_dropboxnein.pack_forget()
     
+    #QR-Code-Pfad erstellen
+    qr_pfad = os.path.join(qr_ordnerpfad, qr_name)
+    qr_bild = ImageTk.PhotoImage(Image.open(qr_pfad))
+
+
+    label_link_qr = Label(gui_frame, text = str(link_gif_dp), font = ("Arial", 20), bg= farbe_bg)
+
+
+    gui_frame.pack(pady=100)
+    label_bild_qr = Label(gui_frame, image = qr_bild)
+    label_link_qr.pack(pady=30)
+    label_bild_qr.pack()
+
+
+
+
+def clicked_button_restart():
+    #Barcode, Label QR-Code und Button restart ausblenden
     #Label und Button für Restart einblenden
     restart_gui()
 
@@ -158,6 +178,12 @@ def clicked_button_restart():
     start_gui()
 
 if __name__ == '__main__':
+    # Ordner QR-Code erstellen
+    script_path = os.path.dirname(os.path.abspath(__file__))
+    qr_ordnerpfad = os.path.join(script_path, "QR_Codes")
+    if not os.path.isdir(qr_ordnerpfad):
+        os.mkdir(qr_ordnerpfad)
+
     #Button erstellen
     button_start = Button(gui_frame, text="Start", command=clicked_button_start, font=("Arial", 20), bg="black", fg="white")
     button_losgehts = Button(gui_frame, text="Los gehts", command=clicked_button_losgehts, font=("Arial", 20), bg="black", fg="white")
@@ -179,7 +205,7 @@ if __name__ == '__main__':
     label_losgehts = Label(gui_frame, text ="Bist du bereit?\nSetze dich bitte aufrecht auf den Stuhl und drücke auf 'Los gehts'.", font = ("Arial", 20), bg= farbe_bg)
     
     label_dropbox = Label(gui_frame, text ="Darf das GIF in die Dropbox geladen werden?", font = ("Arial", 20), bg= farbe_bg)
-    
+
     label_restart = Label(gui_frame, text ="Bitte hier klicken, um die Lachmaschün neu zu starten", font = ("Arial", 20), bg= farbe_bg)
 
     #Gui starten
