@@ -20,10 +20,10 @@ gui1.configure(bg= farbe_bg)
 gui_frame = Frame(gui1, bg= farbe_bg)
 gui1.title("Lachmaschuen")
 #Fenstergröße festlegen
-#gui1.geometry('1100x1000')  
+gui1.geometry('800x480')  
 
 #Fullscreen ESC beendet
-gui1.attributes('-fullscreen', True)
+gui1.attributes('-fullscreen', False)
 gui1.bind("<Escape>", quit)
 
 gif_pfad = ""
@@ -43,14 +43,14 @@ qr_pfad = ""
 
 ##Gui starten
 def start_gui():
-    gui_frame.pack(pady=200)
+    gui_frame.pack(pady=20)
     label_startfoto.pack()
-    label_start.pack(pady=30)
+    label_start.pack(pady=10)
     button_start.pack(side='bottom')
     
 
 def losgehts_gui():
-    gui_frame.pack(pady=200)
+    gui_frame.pack(pady=20)
     label_losgehts.pack(pady=30)
     button_losgehts.pack(side='bottom')    
  
@@ -62,12 +62,12 @@ def dropbox_gui():
     button_dropboxnein.pack(side='right')
 
 def restart_dropbox_ja_gui():
-    gui_frame.pack(pady=200)
+    gui_frame.pack(pady=20)
     label_restart.pack(pady=30)
     button_restart_dropbox_ja.pack(side='bottom')
     
 def restart_dropbox_nein_gui():
-    gui_frame.pack(pady=200)
+    gui_frame.pack(pady=2)
     label_restart.pack(pady=30)
     button_restart_dropbox_nein.pack(side='bottom')
 
@@ -105,7 +105,6 @@ def clicked_button_losgehts():
     gif_pfad = camera.camera_pic()
     global frames
     frames = [PhotoImage(file=gif_pfad,format = 'gif -index %i' %(i)) for i in range(4)]
-    
     gui_frame.pack_forget()
     label_bittewarten.pack_forget()
     
@@ -235,6 +234,8 @@ if __name__ == '__main__':
     label_qr_erklärung = Label(gui_frame, text ="Unter folgendem QR-Code bzw. Link kannst du dir dein Gif herunterladen", font = ("Arial", 20), bg= farbe_bg)
 
     label_restart = Label(gui_frame, text ="Bitte hier klicken, um die Lachmaschün neu zu starten", font = ("Arial", 20), bg= farbe_bg)
+    
+    label_gif = Label(gui_frame, image = gif_pfad)
 
     #Gui starten
     start_gui()

@@ -12,13 +12,14 @@ from picamera import PiCamera, Color
 import time
 from datetime import datetime
 import os
+import motor
 
 
 camera = PiCamera()
 
 #Konfiguration Kamera
 ##Auflösung anpassen
-camera.resolution = (1024, 768)
+camera.resolution = (320, 240)
 
 ##horizontal spiegeln
 #camera.rotation = 180
@@ -75,7 +76,7 @@ def camera_pic():
         # Countdown läuft runter 5.. 4..
         for i in range(5,2,-1):
             camera.annotate_text = "%s" % i
-            time.sleep(1)
+            time.sleep(.5)
         camera.annotate_text = ""
                                       
         
@@ -83,10 +84,15 @@ def camera_pic():
         pfad_temp = pfad_pics + '/pics_session'
         os.mkdir(pfad_temp)
         
+        #motor starten
+        motor.forward(0.001,150)
+        motor.backwards(0.001,150)
+        motor.setStep(0,0,0,0)
+        
         # bei 3 startet die Kamera mit der Aufnahme
         for i in range(num_pic):
             camera.capture(pfad_temp + '/image{0:02d}.jpg'.format(i))
-            time.sleep(0.5)
+            time.sleep(0.2)
             
         #Preview wird beendet    
         camera.stop_preview()                           
