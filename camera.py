@@ -22,7 +22,7 @@ camera = PiCamera()
 camera.resolution = (320, 240)
 
 ##horizontal spiegeln
-#camera.rotation = 180
+camera.rotation = 180
 
 ##Belichtung
 ### off, auto, night, nightpreview, backlight, spotlight, sports, snow, beach, verylong, fixedfps, antishake, fireworks
@@ -30,7 +30,7 @@ camera.exposure_mode = 'auto'
 
 ##Weißabgleich
 ### off, auto, sunlight, cloudy, shade, tungsten, fluorescent, flash, horizon
-camera.awb_mode = 'fluorescent'
+camera.awb_mode = 'auto'
 
 #Konfiguration GIF
 #Anzahl Bilder in GIF
@@ -64,7 +64,7 @@ def gif(pfad_pics_parameter):
 def camera_pic():
     try:
         #alpha: Preview halb-durchsichtig starten (0-255) alpha = 200
-        camera.start_preview(alpha = 200, fullscreen = True) 
+        camera.start_preview(fullscreen = True) 
         # Text konfigurieren
         camera.annotate_text_size = 160 #6-160
         camera.annotate_background = Color('black')

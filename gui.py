@@ -63,7 +63,7 @@ def dropbox_gui():
 
 def restart_dropbox_ja_gui():
     gui_frame.pack(pady=20)
-    label_restart.pack(pady=30)
+    label_restart.pack(pady=10)
     button_restart_dropbox_ja.pack(side='bottom')
     
 def restart_dropbox_nein_gui():
@@ -141,18 +141,18 @@ def clicked_button_dropboxja():
     global qr_bild
     qr_bild = ImageTk.PhotoImage(Image.open(qr_pfad))
 
-    gui_frame.pack(pady=200)
+    gui_frame.pack(pady=100)
     global label_bild_qr
     label_bild_qr = Label(gui_frame, image = qr_bild)
-    global label_link_qr
-    label_link_qr = Label(gui_frame, text = str(link_gif_dp), font = ("Arial", 20), bg= farbe_bg)
+    #global label_link_qr
+    #label_link_qr = Label(gui_frame, text = str(link_gif_dp), font = ("Arial", 20), bg= farbe_bg)
 
     #gui_frame.pack_forget()
     label_bittewarten.pack_forget()
 
-    label_qr_erklärung.pack(ipady=40)
+    label_qr_erklärung.pack(ipady=10)
     label_bild_qr.pack()
-    label_link_qr.pack(pady=30)
+    #label_link_qr.pack(pady=30)
 
     restart_dropbox_ja_gui()
 
@@ -181,7 +181,7 @@ def clicked_button_restart_dropbox_ja():
     gui_frame.pack_forget()
     label_qr_erklärung.pack_forget()
     label_bild_qr.pack_forget()
-    label_link_qr.pack_forget()
+    #label_link_qr.pack_forget()
     label_restart.pack_forget()
     button_restart_dropbox_ja.pack_forget()
     
@@ -206,34 +206,34 @@ if __name__ == '__main__':
         os.mkdir(qr_ordnerpfad)
 
     #Button erstellen
-    button_start = Button(gui_frame, text="Start", command=clicked_button_start, font=("Arial", 20), bg="black", fg="white")
-    button_losgehts = Button(gui_frame, text="Los gehts", command=clicked_button_losgehts, font=("Arial", 20), bg="black", fg="white")
+    button_start = Button(gui_frame, text="Start", command=clicked_button_start, font=("Arial", 16), bg="black", fg="white")
+    button_losgehts = Button(gui_frame, text="Los gehts", command=clicked_button_losgehts, font=("Arial", 16), bg="black", fg="white")
     
-    button_dropboxja = Button(gui_frame, text="Ja, her damit", command=clicked_button_dropboxja, font=("Arial", 20), bg="black", fg="white")
+    button_dropboxja = Button(gui_frame, text="Ja, her damit", command=clicked_button_dropboxja, font=("Arial", 16), bg="black", fg="white")
     
-    button_dropboxnein = Button(gui_frame, text="Nein, bloß nicht", command=clicked_button_dropboxnein, font=("Arial", 20), bg="black", fg="white")
+    button_dropboxnein = Button(gui_frame, text="Nein, bloß nicht", command=clicked_button_dropboxnein, font=("Arial", 16), bg="black", fg="white")
     
-    button_restart_dropbox_ja = Button(gui_frame, text = "von vorne", command= clicked_button_restart_dropbox_ja, font= ("Arial",20), bg="black", fg="white")
+    button_restart_dropbox_ja = Button(gui_frame, text = "von vorne", command= clicked_button_restart_dropbox_ja, font= ("Arial",16), bg="black", fg="white")
     
-    button_restart_dropbox_nein = Button(gui_frame, text = "von vorne", command= clicked_button_restart_dropbox_nein, font= ("Arial",20), bg="black", fg="white")
+    button_restart_dropbox_nein = Button(gui_frame, text = "von vorne", command= clicked_button_restart_dropbox_nein, font= ("Arial",16), bg="black", fg="white")
 
 
     #Label erstellen
-    label_start = Label(gui_frame, text ="Schün, dass du da bist.\nDrücke Start, um die Lachmaschün zu starten", font = ("Arial", 20), bg= farbe_bg)
+    label_start = Label(gui_frame, text ="Schün, dass du da bist.\nDrücke Start, um die Lachmaschün zu starten", font = ("Arial", 16), bg= farbe_bg)
     
     startfoto = ImageTk.PhotoImage(Image.open("startbild.jpg"))
     
     label_startfoto = Label(gui_frame, image = startfoto)
     
-    label_losgehts = Label(gui_frame, text ="Bist du bereit?\nSetze dich bitte aufrecht auf den Stuhl und drücke auf 'Los gehts'.", font = ("Arial", 20), bg= farbe_bg)
+    label_losgehts = Label(gui_frame, text ="Bist du bereit?\nSetze dich bitte aufrecht auf den Stuhl und drücke auf 'Los gehts'.", font = ("Arial", 16), bg= farbe_bg)
     
-    label_bittewarten = Label(gui_frame, text ="Die Lachmaschün ist beschäftigt.\nBitte warten!", font = ("Arial", 20), bg= farbe_bg)
+    label_bittewarten = Label(gui_frame, text ="Die Lachmaschün ist beschäftigt.\nBitte warten!", font = ("Arial", 16), bg= farbe_bg)
     
-    label_dropbox = Label(gui_frame, text ="Du hast jetzt die Möglichkeit, einen QR-Code zu erzeugen, um dein Gif herunterzuladen.\nDas Gif wird dazu in die Lachmaschün-Dropbox geladen.", font = ("Arial", 20), bg= farbe_bg)
+    label_dropbox = Label(gui_frame, text ="Du hast jetzt die Möglichkeit, einen QR-Code zu erzeugen,\num dein Gif herunterzuladen.\nDas Gif wird dazu in die Lachmaschün-Dropbox geladen.", font = ("Arial", 16), bg= farbe_bg)
     
-    label_qr_erklärung = Label(gui_frame, text ="Unter folgendem QR-Code bzw. Link kannst du dir dein Gif herunterladen", font = ("Arial", 20), bg= farbe_bg)
+    label_qr_erklärung = Label(gui_frame, text ="Unter folgendem QR-Code kannst du dir dein Gif herunterladen", font = ("Arial", 16), bg= farbe_bg)
 
-    label_restart = Label(gui_frame, text ="Bitte hier klicken, um die Lachmaschün neu zu starten", font = ("Arial", 20), bg= farbe_bg)
+    label_restart = Label(gui_frame, text ="Bitte hier klicken, um die Lachmaschün neu zu starten", font = ("Arial", 16), bg= farbe_bg)
     
     label_gif = Label(gui_frame, image = gif_pfad)
 
