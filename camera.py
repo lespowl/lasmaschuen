@@ -22,7 +22,7 @@ camera = PiCamera()
 camera.resolution = (320, 240)
 
 ##horizontal spiegeln
-#camera.rotation = 180
+camera.rotation = 180
 
 ##Belichtung
 ### off, auto, night, nightpreview, backlight, spotlight, sports, snow, beach, verylong, fixedfps, antishake, fireworks
@@ -88,14 +88,14 @@ def camera_pic():
         # bei 3 startet die Kamera mit der Aufnahme
         for i in range(num_pic):
             camera.capture(pfad_temp + '/image{0:02d}.jpg'.format(i))
-            motor.forward(0.001,35)
-            #time.sleep(0.2)
+            motor.forward(0.001,25)
+            time.sleep(0.2)
             
         #Preview wird beendet    
         camera.stop_preview() 
         
         #motor zurücksetzen
-        motor.backwards(0.001,140)
+        motor.backwards(0.001,100)
         motor.setStep(0,0,0,0)                          
         
         # Funktion gif aufrufen, temporären Pics-session-Ordner übergeben
