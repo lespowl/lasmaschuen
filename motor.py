@@ -47,10 +47,15 @@ def backwards(delay, steps):
             setStep(Seq[j][0], Seq[j][1], Seq[j][2], Seq[j][3])
             time.sleep(delay)
 
-delay=1
-steps=150
+delay=10
+steps=50
             
 if __name__ == '__main__':
-    forward(int(delay) / 1000.0, int(steps))
-    backwards(int(delay) / 1000.0, int(steps))
+    richtung = input("nach(a)ußen oder (i)nnen oder (q)uit?")
+    if richtung=="q":
+        setStep(0,0,0,0)   
+    elif richtung=="a":
+        forward(int(delay) / 1000.0, int(steps))
+    elif richtung=="i":
+        backwards(int(delay) / 1000.0, int(steps))
     

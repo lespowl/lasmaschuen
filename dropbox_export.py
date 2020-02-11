@@ -24,7 +24,7 @@ def dropbox_ja(gif_pfad):
     qr = qrcode.QRCode(
         version = 1,
         error_correction = qrcode.constants.ERROR_CORRECT_H,
-        box_size = 2,
+        box_size = 3,
         border = 4,)
     
     # QR-Code erstellen

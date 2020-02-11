@@ -23,7 +23,7 @@ gui1.title("Lachmaschuen")
 gui1.geometry('800x480')  
 
 #Fullscreen ESC beendet
-gui1.attributes('-fullscreen', False)
+gui1.attributes('-fullscreen', True)
 gui1.bind("<Escape>", quit)
 
 gif_pfad = ""
