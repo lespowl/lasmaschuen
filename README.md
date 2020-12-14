@@ -1,2 +1,2 @@
 # lasmaschuen
-Das ist ein Projekt für die Uni
+A project for a robotic camera
